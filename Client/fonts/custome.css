@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Ubuntu';
+    src: url('href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&family=Ubuntu:ital@1&display=swap" rel="stylesheet') format('truetype'),
+    /* Add additional font weights/styles here as needed */
+  }
+  
+  /* Rest of your CSS styles */
+  body {
+    background-color: #F5F6F7;
+    font-family: 'Ubuntu', sans-serif;
+  }
+  

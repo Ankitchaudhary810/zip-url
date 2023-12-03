@@ -1,0 +1,31 @@
+.heading {
+    font-size: 36px;
+  }
+  
+  .sub-heading {
+    font-size: 18px;
+  }
+  
+  @media (max-width: 576px) {
+    .heading {
+      font-size: 24px;
+    }
+  
+    .sub-heading {
+      font-size: 14px;
+    }
+  }
+  
+
+.btn-change {
+  outline: 2px;
+}
+.btn-change:hover{
+  background-color: #F3F3F3;
+}
+
+hr{
+  color: black;
+  background-color: rgb(255, 37, 37);
+  width: 30%;
+}

@@ -1,0 +1,21 @@
+/* For mobile devices */
+@media (max-width: 768px) {
+  .chart-container {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.card-hover-enabled:hover {
+  transform: translateY(-5px);
+  box-shadow: 4px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 4px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 4px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add a transition property */
+}
+/* Disable hover effect when loading is true */
+.card-hover-disabled {
+  transition: none;
+  cursor: not-allowed;
+}
