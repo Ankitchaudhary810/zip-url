@@ -110,3 +110,35 @@ export const AdminDeleteUser = async (adminId, userId, admintoken) => {
         return error;
     }
 }
+export const AdminReports = async (admintoken, id) => {
+    try {
+        const response = await fetch(`${API}/user-side/reports/${id}`, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${admintoken}`,
+            }
+        });
+        return await response.json();
+    } catch (error) {
+        return error
+    }
+}
+
+
+export const DeleteUserUrl = async (admintoken, urlId, userId) => {
+    try {
+        const response = await fetch(`${API}/user/delete/url/${urlId}/${userId}`, {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${admintoken}`,
+            }
+        });
+        return await response.json();
+    } catch (error) {
+        return error
+    }
+}

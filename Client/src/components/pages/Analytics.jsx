@@ -356,7 +356,7 @@ const Analytics = () => {
                     <div className="align-self-center">
                       <i className="bi bi-people-fill primary font-large-2 float-left"></i>
                     </div>
-                    <div className="media-body text-right">
+                    <div className="media-body text-right bg-orange-600">
                       <h3>{clicks}</h3>
                       <span>No.Of Clicks</span>
                     </div>

@@ -63,6 +63,7 @@ exports.signin = async (req, res) => {
   const { email, password } = req.body;
   console.log({ email, password })
   try {
+    console.log(User.find({}))
     const user = await User.findOne({ email });
 
     if (user === null) {

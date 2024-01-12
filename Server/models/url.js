@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const urlSchema = new Schema({
-  
+
   originalUrl: {
     type: String,
     required: true,
@@ -21,7 +21,7 @@ const urlSchema = new Schema({
       userAgent: String,
       browser: String,
       os: String,
-      platform:String,
+      platform: String,
       city: String,
       region: String,
       country_name: String,
@@ -36,9 +36,9 @@ const urlSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  createdBy:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"users"
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user"
   }
 });
 

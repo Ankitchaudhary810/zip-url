@@ -5,6 +5,8 @@ const app = express();
 const dotenv = require('dotenv');
 const useragent = require('express-useragent');
 const path = require('path');
+const apicache = require("apicache");
+
 
 // Middleware
 app.use(cors());
@@ -41,7 +43,8 @@ app.use('/admin', adminRoutes);
 
 app.use(useragent.express());
 app.get("/", (req, res) => {
-  res.send("zipurl working");
+
+  res.status(200).json("zipurl working")
 
 })
 

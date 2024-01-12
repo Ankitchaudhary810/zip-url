@@ -285,3 +285,18 @@ exports.DeleteShortUrl = async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+
+exports.getshortUrlById = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const url = await Url.findById({ _id: id });
+    if (!url) return res.json({ msg: "Url Not Found" });
+    res.json(url);
+  } catch (error) {
+    console.error('Error while deleting URL:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+
+  }
+}

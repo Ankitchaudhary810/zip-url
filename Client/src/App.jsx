@@ -23,6 +23,8 @@ import AdminRoute from "./components/Admin/AdminRoute";
 import AdminLogin from "./components/Admin/AdminLogin";
 import AdminDashBoard from "./components/Admin/AdminDashBoard";
 import AdminUserData from "./components/Admin/AdminUserData";
+import AdminReport from "./components/Admin/AdminReport";
+import AdminSummary from "./components/Admin/AdminSummary";
 
 const App = () => {
   return (
@@ -45,6 +47,8 @@ const AdminLayout = () => (
         <Route path="login" element={<AdminLogin />} />
         <Route path="dashboard" element={<AdminDashBoard />} />
         <Route path=":userId/:adminId" element={<AdminUserData />} />
+        <Route path="reports" element={<AdminReport />} />
+        <Route path="summary" element={<AdminSummary />} />
       </Route>
     </Routes>
   </>

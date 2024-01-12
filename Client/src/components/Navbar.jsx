@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   MDBDropdown,
@@ -16,9 +16,17 @@ import logout from "../../Assets/logout.png";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const [data, setData] = useState(null);
   const history = useNavigate();
 
-  const data = isAuthenticated();
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData = await isAuthenticated();
+      setData(userData);
+    };
+
+    fetchData();
+  }, []);
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -170,6 +178,8 @@ const Navbar = () => {
                     tag="a"
                     className="nav-link dropdown-toggle user-action"
                   >
+                    {/* {data.user.fullName && (
+                      <> */}
                     <img
                       src={profile}
                       width="27px"
@@ -178,7 +188,9 @@ const Navbar = () => {
                       alt="Avatar"
                       style={{ marginRight: "4px" }}
                     />
-                    {data.user.fullName}
+                    {/* {data.user.fullName} */}
+                    {/* </>
+                    )} */}
                     {/* <b className="caret"></b> */}
                   </MDBDropdownToggle>
                   <MDBDropdownMenu>
