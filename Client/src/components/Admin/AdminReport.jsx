@@ -19,14 +19,36 @@ const AdminReport = () => {
   const [filterByName, setFilterByName] = useState("");
   const [filterByEmail, setFilterByEmail] = useState("");
 
-  // name filter method:
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  // Updated filteredData array to include timestamp filter
   const filteredData = userData.filter(
     (data) =>
       data.fullName.toLowerCase().includes(filterByName.toLowerCase()) ||
-      data.email.toLowerCase().includes(filterByEmail.toLowerCase())
+      data.email.toLowerCase().includes(filterByEmail.toLowerCase()) ||
+      (fromDate &&
+        toDate &&
+        new Date(data.timestamp).getTime() >= new Date(fromDate).getTime() &&
+        new Date(data.timestamp).getTime() <= new Date(toDate).getTime())
   );
 
+  const handleFilterSubmit = () => {
+    const filteredData = userData.filter(
+      (data) =>
+        fromDate &&
+        toDate &&
+        new Date(data.timestamp).getTime() >= new Date(fromDate).getTime() &&
+        new Date(data.timestamp).getTime() <= new Date(toDate).getTime()
+    );
+    setUserData(filteredData);
+  };
+
   useEffect(() => {
+    fetchReport();
+  }, []);
+
+  const fetchReport = () => {
     setIsLoading(true);
     AdminReports(admintoken, adminId).then((data) => {
       setReports(data);
@@ -44,7 +66,15 @@ const AdminReport = () => {
       });
 
     console.log({ userData });
-  }, []);
+  };
+
+  const handleResetFilters = () => {
+    setFilterByName("");
+    setFilterByEmail("");
+    setFromDate("");
+    setToDate("");
+    fetchReport();
+  };
 
   const headers = [
     { label: "Full Name", key: "fullName" },
@@ -152,6 +182,8 @@ const AdminReport = () => {
                         className="form-control"
                         name=""
                         id=""
+                        value={fromDate}
+                        onChange={(e) => setFromDate(e.target.value)}
                       />
                     </div>
                     To
@@ -161,10 +193,27 @@ const AdminReport = () => {
                         className="form-control"
                         name=""
                         id=""
+                        value={toDate}
+                        onChange={(e) => setToDate(e.target.value)}
                       />
                     </div>
                     <div className="col">
-                      <button type="button" className="btn btn-danger">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => {
+                          handleFilterSubmit();
+                        }}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                    <div className="col">
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={handleResetFilters}
+                      >
                         Reset Filter
                       </button>
                     </div>
