@@ -165,6 +165,80 @@ const UrlCard = ({ url, onUrlDelete }) => {
     setShowPasswordTooltip(false);
   };
 
+  const userId = data.user._id;
+  const handleUpdateUrl = async (id) => {
+    console.log("id: ", id);
+    const originalUrl = urlData.Original;
+    const shortUrl = urlData.ShortUrl;
+    try {
+      const response = await fetch(
+        `http://localhost:1234/url-update/${id}/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ originalUrl, shortUrl }),
+        }
+      );
+
+      console.log(response.status);
+      const data = await response.json();
+      if (response.status === 200) {
+        toast.success(`shortUrl Updated`, {
+          position: "top-right",
+          autoClose: 2200,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        window.location.reload();
+
+        console.log("Update success data: ", data);
+      } else if (response.status === 400) {
+        toast.error(`Update failed: ShortUrl Already Exists`, {
+          position: "top-right",
+          autoClose: 2200,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        console.error("Update failed:", response.statusText);
+        toast.error(`Update failed: ${response.statusText}`, {
+          position: "top-right",
+          autoClose: 2200,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
+    } catch (error) {
+      console.error("Error during update:", error);
+      toast.error("Error during update", {
+        position: "top-right",
+        autoClose: 2200,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  };
+
   return (
     <>
       <div className="card text-white mt-2 mx-2" style={myStyle}>
@@ -423,7 +497,7 @@ const UrlCard = ({ url, onUrlDelete }) => {
               <button
                 type="button"
                 className="btn btn-outline-success"
-                // onClick={() => handleUpdateMr(id)}
+                onClick={() => handleUpdateUrl(url._id)}
               >
                 Update
               </button>

@@ -295,8 +295,30 @@ exports.getshortUrlById = async (req, res) => {
     if (!url) return res.json({ msg: "Url Not Found" });
     res.json(url);
   } catch (error) {
-    console.error('Error while deleting URL:', error);
+    console.error('Error while shortUrlbyId URL:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
 
+  }
+}
+
+
+exports.handleUpdateUrl = async (req, res) => {
+  try {
+
+    const { originalUrl, shortUrl } = req.body;
+
+    let url = await Url.findOne({ shortUrl: shortUrl });
+    if (url) return res.status(400).json({ msg: "shortUrl Already Exits" })
+    url = await Url.findByIdAndUpdate({ _id: req.params.id }, {
+      originalUrl,
+      shortUrl
+    }, { new: true });
+    await url.save();
+    return res.status(200).json(url);
+
+
+  } catch (error) {
+    console.error('Error while shortUrlbyId URL:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
