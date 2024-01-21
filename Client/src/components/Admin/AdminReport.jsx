@@ -23,27 +23,37 @@ const AdminReport = () => {
   const [toDate, setToDate] = useState("");
 
   // Updated filteredData array to include timestamp filter
-  const filteredData = userData.filter(
-    (data) =>
-      data.fullName.toLowerCase().includes(filterByName.toLowerCase()) ||
-      data.email.toLowerCase().includes(filterByEmail.toLowerCase()) ||
-      (fromDate &&
-        toDate &&
-        new Date(data.timestamp).getTime() >= new Date(fromDate).getTime() &&
-        new Date(data.timestamp).getTime() <= new Date(toDate).getTime())
-  );
 
-  const handleFilterSubmit = () => {
-    const filteredData = userData.filter(
-      (data) =>
-        fromDate &&
-        toDate &&
-        new Date(data.timestamp).getTime() >= new Date(fromDate).getTime() &&
-        new Date(data.timestamp).getTime() <= new Date(toDate).getTime()
-    );
-    setUserData(filteredData);
-  };
+  // const filteredData = userData.filter(
+  //   (data) =>
+  //     data.fullName.toLowerCase().includes(filterByName.toLowerCase()) ||
+  //     data.email.toLowerCase().includes(filterByEmail.toLowerCase()) ||
+  //     (fromDate &&
+  //       toDate &&
+  //       new Date(data.timestamp).getTime() >= new Date(fromDate).getTime() &&
+  //       new Date(data.timestamp).getTime() <= new Date(toDate).getTime())
+  // );
 
+  // const handleFilterSubmit = () => {
+  //   const filteredData = userData.filter(
+  //     (data) =>
+  //       fromDate &&
+  //       toDate &&
+  //       new Date(data.timestamp).getTime() >= new Date(fromDate).getTime() &&
+  //       new Date(data.timestamp).getTime() <= new Date(toDate).getTime()
+  //   );
+  //   setUserData(filteredData);
+  // };
+
+  const filterdData = userData.filter((user) => {
+    const NameCondition =
+      filterByName.trim() === "" || user.fullName.includes(filterByName.trim());
+
+    const EmailCondition =
+      filterByEmail.trim() === "" || user.email.includes(filterByEmail.trim());
+
+    return NameCondition || EmailCondition;
+  });
   useEffect(() => {
     fetchReport();
   }, []);
@@ -241,8 +251,8 @@ const AdminReport = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredData &&
-                    filteredData.map((data, index) => (
+                  {filterdData &&
+                    filterdData.map((data, index) => (
                       <tr key={index}>
                         <th scope="row w-100">{index + 1}</th>
                         <td>{data.fullName}</td>
