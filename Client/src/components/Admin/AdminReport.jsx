@@ -22,29 +22,6 @@ const AdminReport = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
-  // Updated filteredData array to include timestamp filter
-
-  // const filteredData = userData.filter(
-  //   (data) =>
-  //     data.fullName.toLowerCase().includes(filterByName.toLowerCase()) ||
-  //     data.email.toLowerCase().includes(filterByEmail.toLowerCase()) ||
-  //     (fromDate &&
-  //       toDate &&
-  //       new Date(data.timestamp).getTime() >= new Date(fromDate).getTime() &&
-  //       new Date(data.timestamp).getTime() <= new Date(toDate).getTime())
-  // );
-
-  // const handleFilterSubmit = () => {
-  //   const filteredData = userData.filter(
-  //     (data) =>
-  //       fromDate &&
-  //       toDate &&
-  //       new Date(data.timestamp).getTime() >= new Date(fromDate).getTime() &&
-  //       new Date(data.timestamp).getTime() <= new Date(toDate).getTime()
-  //   );
-  //   setUserData(filteredData);
-  // };
-
   const filterdData = userData.filter((user) => {
     const NameCondition =
       filterByName.trim() === "" || user.fullName.includes(filterByName.trim());
@@ -130,7 +107,7 @@ const AdminReport = () => {
                   Back
                 </button>
               </Link>
-              <h2 className="text-center bg-orange-500 ">Admin Dashboard</h2>
+              <h2 className="text-center bg-orange-500">Admin Dashboard</h2>
               <CSVLink
                 data={csvData}
                 headers={headers}
