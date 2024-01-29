@@ -25,6 +25,7 @@ import AdminDashBoard from "./components/Admin/AdminDashBoard";
 import AdminUserData from "./components/Admin/AdminUserData";
 import AdminReport from "./components/Admin/AdminReport";
 import AdminSummary from "./components/Admin/AdminSummary";
+import { Theme } from "@radix-ui/themes";
 
 const App = () => {
   return (

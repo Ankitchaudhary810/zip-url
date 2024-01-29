@@ -8,6 +8,7 @@ const fs = require('fs');
 const util = require('util');
 const sendEmail = require("../utils/sendEmail");
 var useragent = require('express-useragent');
+const xlsx = require("xlsx")
 app.use(useragent.express());
 
 
@@ -79,7 +80,6 @@ exports.createShortUrl = async (req, res) => {
       createdBy: req.profile._id
     })
     const urlToSave = await url.save();
-    console.log("req.profile", req.profile);
     const text = `
       <p>Hii, ${req.profile.fullName} You have Create a Password Protected Url: Details as follow</p>
       <table>
@@ -123,6 +123,87 @@ exports.createShortUrl = async (req, res) => {
     })
   }
 }
+
+exports.BulkUpload = async (req, res) => {
+  try {
+    console.log(req.file);
+    let sendMailToPassword = false;
+
+
+    if (!req.file) {
+      return res.json({ msg: "File not Found" })
+    }
+
+    const workbook = xlsx.readFile(req.file.path);
+    const sheetName = workbook.SheetNames[0];
+    const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+    for (const row of sheetData) {
+      const { Url: originalUrl, 'Customize name': customizeName, Password: password } = row;
+
+      if (!originalUrl) {
+        console.log('Skipping row: URL is missing');
+        continue;
+      }
+
+      try {
+        let hashedPassword = null;
+        if (password) {
+          hashedPassword = await bcrypt.hash(password, 4);
+          sendMailToPassword = true;
+        }
+
+        const url = new Url({
+          originalUrl,
+          shortUrl: customizeName || shortId.generate(),
+          password: hashedPassword,
+          createdBy: req.profile._id,
+        });
+
+        const urlToSave = await url.save();
+
+        const text = `
+          <p>Hii, ${req.profile.fullName} You have Create a Password Protected Url: Details as follow</p>
+          <table>
+            <tr>
+              <th>Original Url:</th>
+              <td>${url.originalUrl}</td>
+            </tr>
+            <tr>
+              <th>Short Url:</th>
+              <td><a href=http://localhost:1234/${url.shortUrl}>zipurl/${url.shortUrl}</a></td>
+            </tr>
+            <tr>
+              <th>Password:</th>
+              <td>${password}</td>
+            </tr>
+            <tr>
+              <th>createdAt:</th>
+              <td>${formatDate(url.createdAt)}</td>
+            </tr>
+          </table>
+        `;
+
+        if (urlToSave) {
+          if (sendMailToPassword) await sendEmail(req.profile.email, 'Short URL Password', text);
+        }
+      } catch (err) {
+        JSON.stringify(err);
+        if (err.code === 11000) {
+          return res.status(400).json({
+            msg: `Name already Exits please Take different One`
+          })
+        }
+      }
+    }
+
+    return res.json({ msg: 'Bulk upload successful' });
+  } catch (err) {
+    console.error(err);
+    const errMsg = err.message
+    return res.status(500).json({ msg: 'Internal Server Error', errMsg });
+  }
+};
 
 exports.verifyPassword = async (req, res) => {
   try {
