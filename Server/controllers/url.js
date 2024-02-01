@@ -124,12 +124,10 @@ exports.createShortUrl = async (req, res) => {
   }
 }
 
+
 exports.BulkUpload = async (req, res) => {
   try {
-    console.log(req.file);
     let sendMailToPassword = false;
-
-
     if (!req.file) {
       return res.json({ msg: "File not Found" })
     }
@@ -147,11 +145,11 @@ exports.BulkUpload = async (req, res) => {
       }
 
       try {
-        let hashedPassword = null;
-        if (password) {
-          hashedPassword = await bcrypt.hash(password, 4);
-          sendMailToPassword = true;
-        }
+        let hashedPassword = password;
+        // if (password) {
+        //   hashedPassword = getHashPassword(password);
+        //   sendMailToPassword = true;
+        // }
 
         const url = new Url({
           originalUrl,
