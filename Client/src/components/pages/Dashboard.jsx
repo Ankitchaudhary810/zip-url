@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { isAuthenticated } from "../../Apicalls/auth";
-import { Link, json } from "react-router-dom";
+import { Link, json, useNavigate } from "react-router-dom";
 import { createShortUrl } from "../../Apicalls/url";
 import ask from "../../../Assets/ask.png";
 import { toast } from "react-toastify";
-import background from "../../../Assets/background.jpg";
 import UrlCard from "../UrlCard";
 import { Spinner } from "react-bootstrap";
 import No from "../../../Assets/no.png";
@@ -16,6 +15,7 @@ import axios from "axios";
 
 const Dashboard = () => {
   const data = isAuthenticated();
+  const navigate = useNavigate();
   const token = data.token;
   const userId = data.user._id;
 
@@ -29,8 +29,11 @@ const Dashboard = () => {
   const [first, setFirst] = useState(false);
 
   const [image, setImage] = useState(null);
-
   const isAnyFieldEmpty = originalUrl.trim() === "";
+
+  const toastStyle = {
+    zIndex: 10000,
+  };
 
   const loadUrls = () => {
     setIsLoadingUrls(true);
@@ -169,9 +172,13 @@ const Dashboard = () => {
 
       console.log("Response:", response.data);
       if (response.status === 200) {
+        console.log("status: ", response.status);
         toast.success("Bulk Link Upload is successful", {
           position: "top-center",
+          style: { zIndex: "100" },
         });
+        // navigate("/user/dashboard");
+        setrelod(!reload);
       } else if (response.status === 400) {
         toast.error("Link With Same Name does not Uploaded In Db.", {
           position: "top-center",
@@ -199,7 +206,7 @@ const Dashboard = () => {
         <Dialog.Content style={{ maxWidth: 600 }}>
           <Dialog.Title>Bulk Link Upload Using Excel</Dialog.Title>
           <Dialog.Description size="2" mb="2">
-            <Badge color="orange" mb={"1"}>
+            <Badge color="red" mb={"1"} variant="outline" highContrast>
               Note.
             </Badge>
             <ul>
@@ -216,6 +223,7 @@ const Dashboard = () => {
                   Key-Map
                 </Badge>
               </li>
+              <li>Password Proteched Url Will Not Create.</li>
               <li>Customize Name Value Can be Blank Also.</li>
             </ul>
             <span style={{ cursor: "pointer", color: "black" }}>

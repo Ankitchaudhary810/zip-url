@@ -39,10 +39,8 @@ const AdminReport = () => {
     setIsLoading(true);
     AdminReports(admintoken, adminId).then((data) => {
       setReports(data);
-
       setIsLoading(false);
     });
-
     fetch("http://localhost:1234/admin/admin-reports", {
       method: "GET",
     })
