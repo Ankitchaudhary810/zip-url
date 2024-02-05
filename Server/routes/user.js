@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 
-const { getUserById, getUser, verifyUser, getUrlsById, updateUserName, updateUserPassword } = require("../controllers/user");
+const { getUserById, getUser, verifyUser, getUrlsById, updateUserName, updateUserPassword, handleFeedbackFormSubmit } = require("../controllers/user");
 
 const { isSignedIn, isAuthenticated } = require("../controllers/auth");
 
@@ -15,6 +15,11 @@ router.put("/user/update/password/:userId", isSignedIn, isAuthenticated, updateU
 
 //Test Route 
 router.get("/urls/:userId", getUrlsById);
+
+
+// feedback form route
+
+router.post("/feedback-form", handleFeedbackFormSubmit);
 
 
 module.exports = router;

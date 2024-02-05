@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const Token = require("../models/token");
-const Url = require("../models/url")
+const Url = require("../models/url");
+const FormModel = require("../models/form");
 const bcrypt = require("bcrypt");
 const sendEmail = require('../utils/sendEmail');
 exports.getUserById = async (req, res, next, _id) => {
@@ -96,7 +97,7 @@ exports.updateUserName = async (req, res) => {
     const updatedUser = await User.findOneAndUpdate(
       { _id: userId },
       { fullName },
-      { new: true } 
+      { new: true }
     );
 
     if (updatedUser) {
@@ -167,3 +168,43 @@ exports.updateUserPassword = async (req, res) => {
     });
   }
 };
+
+
+exports.handleFeedbackFormSubmit = async (req, res) => {
+  try {
+    const { FullName, Email, Message } = req.body;
+
+    if (!FullName || !Email || !Message) {
+      return res.status(400).json("All Fields Required");
+    };
+
+    const form = await new FormModel({
+      FullName,
+      Email,
+      Message,
+    });
+
+    await form.save();
+
+    const data = `
+    <p>Thank You Form submiting the form.. We reach you in sometimes</p>
+    <br>
+    Your Form Data as Follows:
+    <br>
+
+    FullName: ${form.FullName},
+    <br>
+    Email: ${form.Email},
+    <br>
+    Message: ${form.Message}
+    <br>
+
+    Thank You.
+    `
+    await sendEmail(form.Email, "Contact Form", data)
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error)
+    return res.json({ msg: "Internal Server Error" })
+  }
+}
